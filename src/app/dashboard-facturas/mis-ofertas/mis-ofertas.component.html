@@ -1,0 +1,72 @@
+<section class="mis-ofertas">
+  <!-- Header -->
+  <header class="mis-ofertas__header">
+    <h1 class="mis-ofertas__title">Mis Ofertas</h1>
+  </header>
+
+  <!-- Empty state general: ejecutivo sin ninguna oferta enviada nunca (CA-06) -->
+  <div *ngIf="esVacioGeneral" class="empty-general">
+    <p class="empty-general__msg">
+      Aún no has enviado ninguna oferta. Ve al marketplace para comenzar.
+    </p>
+    <button type="button" class="btn-cta" (click)="navegarOfertador()">
+      Ir al marketplace
+    </button>
+  </div>
+
+  <!-- Filtros (CA-03) -->
+  <fieldset *ngIf="!esVacioGeneral" class="filtros">
+    <legend class="filtros__legend">Filtrar por estado de oferta</legend>
+    <button
+      *ngFor="let f of filtros"
+      type="button"
+      class="filtro-pill"
+      [class.activo]="estado?.filtroEstado === f.valor"
+      [attr.aria-pressed]="estado?.filtroEstado === f.valor"
+      (click)="onFiltro(f.valor)">
+      {{ f.label }}
+    </button>
+  </fieldset>
+
+  <!-- Contenido principal -->
+  <div *ngIf="!esVacioGeneral" class="mis-ofertas__layout" [class.con-panel]="ofertaChatId">
+
+    <!-- Tabla -->
+    <div class="mis-ofertas__tabla">
+      <app-my-offers-table
+        [ofertas]="estado?.ofertas ?? []"
+        [cargando]="estado?.cargando ?? true"
+        [error]="estado?.error ?? null"
+        [paginaActual]="estado?.paginaActual ?? 0"
+        [totalPaginas]="estado?.totalPaginas ?? 0"
+        (reintentar)="onReintentar()"
+        (cambiarPagina)="onCambiarPagina($event)"
+        (retirarOferta)="onRetirarOferta($event)"
+        (abrirChat)="onAbrirChat($event)">
+      </app-my-offers-table>
+    </div>
+
+    <!-- Panel lateral de chat (CA-04: Ver chat) -->
+    <aside *ngIf="ofertaChatId" class="chat-panel" aria-label="Chat de negociación">
+      <div class="chat-panel__header">
+        <span class="chat-panel__title">Chat de negociación</span>
+        <button type="button" class="chat-panel__cerrar" (click)="onCerrarChat()" aria-label="Cerrar chat">
+          ✕
+        </button>
+      </div>
+      <app-negotiation-chat
+        [ofertaId]="ofertaChatId"
+        [isClient]="false"
+        (closed)="onCerrarChat()">
+      </app-negotiation-chat>
+    </aside>
+  </div>
+
+  <!-- Diálogo de confirmación de retiro (CA-04) -->
+  <app-offer-retire-confirm-dialog
+    *ngIf="ofertaParaRetirar"
+    [cargando]="estado?.retirando === ofertaParaRetirar"
+    (confirmar)="onConfirmarRetiro()"
+    (cancelar)="onCancelarRetiro()">
+  </app-offer-retire-confirm-dialog>
+</section>
