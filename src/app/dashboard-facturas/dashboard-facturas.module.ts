@@ -5,6 +5,7 @@ import { DashboardFacturasRoutingModule } from './dashboard-facturas-routing.mod
 import { DashboardHomeComponent } from './dashboard-home/dashboard-home.component';
 import { DashboardCedenteComponent } from './dashboard-cedente/dashboard-cedente.component';
 import { MisOfertasComponent } from './mis-ofertas/mis-ofertas.component';
+import { DashboardEjecutivoComponent } from './dashboard-ejecutivo/dashboard-ejecutivo.component';
 
 @NgModule({
   declarations: [DashboardHomeComponent],
@@ -12,7 +13,8 @@ import { MisOfertasComponent } from './mis-ofertas/mis-ofertas.component';
     CommonModule,
     DashboardFacturasRoutingModule,
     DashboardCedenteComponent,
-    MisOfertasComponent
+    MisOfertasComponent,
+    DashboardEjecutivoComponent
   ]
 })
 export class DashboardFacturasModule { }
