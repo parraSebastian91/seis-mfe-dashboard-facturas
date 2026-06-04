@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { CarteraActiva } from '../dashboard-ejecutivo.service';
 
 @Component({
   selector: 'app-cartera-activa-summary',
   standalone: true,
-  imports: [NgIf],
+  imports: [CommonModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="cartera" aria-label="Cartera activa">

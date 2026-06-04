@@ -5,14 +5,14 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MiOferta } from '../mis-ofertas.service';
 import { OfferStatusBadgeComponent } from '../offer-status-badge/offer-status-badge.component';
 
 @Component({
   selector: 'app-my-offers-table',
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, OfferStatusBadgeComponent],
+  imports: [CommonModule, OfferStatusBadgeComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <!-- Skeleton -->

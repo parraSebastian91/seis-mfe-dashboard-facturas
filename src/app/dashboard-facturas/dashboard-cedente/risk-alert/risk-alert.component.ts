@@ -28,7 +28,7 @@ import { FacturaEnRiesgo } from '../dashboard-cedente.service';
               vence en {{ f.diasVencimiento }} {{ f.diasVencimiento === 1 ? 'día' : 'días' }}
             </span>
             <span class="separador" aria-hidden="true">—</span>
-            <span class="monto">${{ f.monto | number:'1.0-0' }}</span>
+            <span class="monto">&#36;{{ f.monto | number:'1.0-0' }}</span>
           </button>
         </li>
       </ul>
