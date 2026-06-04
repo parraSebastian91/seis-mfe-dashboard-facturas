@@ -6,7 +6,7 @@ import {
   OnDestroy,
   OnInit
 } from '@angular/core';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import {
   DashboardEjecutivoService,
@@ -22,7 +22,7 @@ import { ActivaOffersPipelineComponent } from './activa-offers-pipeline/activa-o
 @Component({
   selector: 'app-dashboard-ejecutivo',
   standalone: true,
-  imports: [NgIf, PeriodSelectorComponent, KpiCardComponent, CarteraActivaSummaryComponent, ActivaOffersPipelineComponent],
+  imports: [NgIf, NgFor, PeriodSelectorComponent, KpiCardComponent, CarteraActivaSummaryComponent, ActivaOffersPipelineComponent],
   templateUrl: './dashboard-ejecutivo.component.html',
   styleUrl: './dashboard-ejecutivo.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
