@@ -1,0 +1,91 @@
+<div class="cedente-layout">
+
+  <!-- Header -->
+  <div class="cedente-header">
+    <h1 class="cedente-titulo">Dashboard</h1>
+    <app-period-selector
+      [periodoActivo]="periodo"
+      (periodoChange)="onPeriodoCambio($event)">
+    </app-period-selector>
+  </div>
+
+  <ng-container *ngIf="estado">
+
+    <!-- CA-02: Pipeline de Facturas -->
+    <section class="seccion">
+      <h2 class="seccion-titulo">Pipeline de Facturas</h2>
+      <app-pipeline-summary
+        [pipeline]="estado.pipeline"
+        [cargando]="estado.cargandoPipeline"
+        [error]="estado.errorPipeline"
+        (reintentar)="onReintentarPipeline()"
+        (navegarA)="onNavegarEstado($event)">
+      </app-pipeline-summary>
+    </section>
+
+    <!-- CA-03: KPIs del período -->
+    <section class="seccion">
+      <h2 class="seccion-titulo">Actividad del período</h2>
+
+      <!-- Empty state (CA-05) -->
+      <div class="empty-state" *ngIf="!estado.cargandoKpis && !estado.errorKpis && todosFueronCero">
+        <p>Aún no tienes operaciones registradas.</p>
+        <a href="/publicador" class="btn-cta">Publica tu primera factura →</a>
+      </div>
+
+      <!-- Error KPIs (CA-05) -->
+      <div class="kpis-error" *ngIf="estado.errorKpis && !estado.cargandoKpis" role="alert">
+        <span>{{ estado.errorKpis }}</span>
+        <button type="button" (click)="onReintentarKpis()">Reintentar</button>
+      </div>
+
+      <div class="kpis-grid" *ngIf="!estado.errorKpis || estado.cargandoKpis">
+        <!-- Capital por recibir (sin variación — instantánea actual) -->
+        <app-kpi-card
+          label="Capital por recibir"
+          [valor]="estado.kpis?.capitalPorRecibir ?? 0"
+          tipo="clp"
+          [variacion]="null"
+          [cargando]="estado.cargandoKpis">
+        </app-kpi-card>
+
+        <!-- Capital recibido -->
+        <app-kpi-card
+          label="Capital recibido"
+          [valor]="estado.kpis?.capitalRecibido?.valor ?? 0"
+          tipo="clp"
+          [variacion]="variacion(estado.kpis?.capitalRecibido?.porcentaje ?? null)"
+          [cargando]="estado.cargandoKpis">
+        </app-kpi-card>
+
+        <!-- Costo promedio financiamiento -->
+        <app-kpi-card
+          label="Costo promedio de financiamiento"
+          [valor]="estado.kpis?.costoPromedioFinanciamiento?.valor ?? 0"
+          tipo="pct"
+          [variacion]="variacion(estado.kpis?.costoPromedioFinanciamiento?.porcentaje ?? null)"
+          [cargando]="estado.cargandoKpis">
+        </app-kpi-card>
+
+        <!-- Tiempo promedio para financiarse -->
+        <app-kpi-card
+          label="Tiempo promedio para financiarse"
+          [valor]="estado.kpis?.tiempoPromedioFinanciamiento?.valor ?? 0"
+          tipo="dias"
+          [variacion]="variacion(estado.kpis?.tiempoPromedioFinanciamiento?.porcentaje ?? null)"
+          [cargando]="estado.cargandoKpis">
+        </app-kpi-card>
+      </div>
+    </section>
+
+    <!-- CA-04: Alerta de facturas en riesgo -->
+    <app-risk-alert
+      *ngIf="estado.alerta && estado.alerta.facturas.length > 0"
+      [facturas]="estado.alerta.facturas"
+      (verFactura)="onVerFactura($event)"
+      (verPublicadas)="onVerPublicadas()">
+    </app-risk-alert>
+
+  </ng-container>
+
+</div>

@@ -1,0 +1,145 @@
+:host {
+  display: block;
+}
+
+.dashboard-ej {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 28px;
+  min-height: 100vh;
+  background: #0f1117;
+  color: #d4d4d8;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ─── Header ─── */
+.dashboard-ej__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.dashboard-ej__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #f4f4f5;
+  margin: 0;
+}
+
+/* ─── Empty ─── */
+.empty-general {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 80px 20px;
+  text-align: center;
+  min-height: 60vh;
+}
+
+.empty-general__msg {
+  color: #71717a;
+  font-size: 1rem;
+  max-width: 400px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.btn-cta {
+  padding: 10px 24px;
+  background: #1d4ed8;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-cta:hover { background: #1e40af; }
+
+/* ─── KPIs del período ─── */
+.kpis-seccion {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kpis-seccion__title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+.kpis-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* ─── Skeleton KPIs ─── */
+.kpi-skeleton {
+  background: #131620;
+  border: 1px solid #1e2028;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skel {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #1e2028 25%, #252830 50%, #1e2028 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+.skel--label { height: 12px; width: 60%; }
+.skel--valor { height: 28px; width: 80%; }
+
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ─── Error KPIs ─── */
+.kpis-error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #1a0a0a;
+  border: 1px solid #450a0a;
+  border-radius: 10px;
+  color: #f87171;
+  font-size: 0.85rem;
+}
+
+.btn-reintentar {
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid #3f3f46;
+  color: #a1a1aa;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-reintentar:hover { background: #27272a; }
+
+/* ─── Responsive ─── */
+@media (max-width: 1023px) {
+  .kpis-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .dashboard-ej { padding: 16px; }
+  .kpis-grid { grid-template-columns: 1fr; }
+  .dashboard-ej__header { flex-direction: column; align-items: flex-start; }
+}

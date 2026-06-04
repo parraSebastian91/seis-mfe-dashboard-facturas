@@ -1,0 +1,89 @@
+<section class="dashboard-ej" *ngIf="estado">
+
+  <!-- Empty state general (CA-05) -->
+  <div *ngIf="esVacioGeneral" class="empty-general">
+    <p class="empty-general__msg">
+      Aún no tienes operaciones registradas. Encuentra facturas en el marketplace.
+    </p>
+    <button type="button" class="btn-cta" (click)="navegarOfertador()">Ir al marketplace</button>
+  </div>
+
+  <ng-container *ngIf="!esVacioGeneral">
+    <!-- Header + selector de período -->
+    <header class="dashboard-ej__header">
+      <h1 class="dashboard-ej__title">Dashboard Ejecutivo</h1>
+      <app-period-selector
+        [periodoActivo]="periodo"
+        (periodoChange)="onPeriodoCambio($event)">
+      </app-period-selector>
+    </header>
+
+    <!-- Cartera activa (CA-02) -->
+    <app-cartera-activa-summary
+      [cartera]="estado.cartera"
+      [cargando]="estado.cargandoCartera"
+      [error]="estado.errorCartera"
+      (reintentar)="onReintentarCartera()">
+    </app-cartera-activa-summary>
+
+    <!-- KPIs del período (CA-03) -->
+    <section class="kpis-seccion">
+      <h2 class="kpis-seccion__title">Resultados del período</h2>
+
+      <!-- Skeleton KPIs -->
+      <div *ngIf="estado.cargandoKpis" class="kpis-grid">
+        <div *ngFor="let i of [0,1,2,3]" class="kpi-skeleton" aria-busy="true">
+          <div class="skel skel--label"></div>
+          <div class="skel skel--valor"></div>
+        </div>
+      </div>
+
+      <!-- Error KPIs -->
+      <div *ngIf="estado.errorKpis && !estado.cargandoKpis" class="kpis-error" role="alert">
+        <span>{{ estado.errorKpis }}</span>
+        <button type="button" class="btn-reintentar" (click)="onReintentarKpis()">Reintentar</button>
+      </div>
+
+      <!-- KPIs data -->
+      <div *ngIf="!estado.cargandoKpis && !estado.errorKpis && estado.kpis" class="kpis-grid">
+        <app-kpi-card
+          label="Retorno realizado"
+          [valor]="estado.kpis.retornoRealizado"
+          tipo="clp"
+          [variacion]="variacion(estado.kpis.retornoRealizadoVariacion)"
+          [cargando]="false">
+        </app-kpi-card>
+        <app-kpi-card
+          label="Operaciones cerradas"
+          [valor]="estado.kpis.operacionesCerradas"
+          tipo="pct"
+          [variacion]="variacion(estado.kpis.operacionesCerradasVariacion)"
+          [cargando]="false">
+        </app-kpi-card>
+        <!-- EB-04: ticket promedio — se muestra "—" cuando ticketPromedio es null -->
+        <app-kpi-card
+          label="Ticket promedio"
+          [valor]="estado.kpis.ticketPromedio ?? 0"
+          tipo="clp"
+          [variacion]="variacion(estado.kpis.ticketPromedioVariacion)"
+          [cargando]="false">
+        </app-kpi-card>
+        <!-- Retorno proyectado: instantánea, sin variación (CA-03 nota) -->
+        <app-kpi-card
+          label="Retorno proyectado"
+          [valor]="estado.cartera?.retornoProyectado ?? 0"
+          tipo="clp"
+          [variacion]="null"
+          [cargando]="estado.cargandoCartera">
+        </app-kpi-card>
+      </div>
+    </section>
+
+    <!-- Pipeline de ofertas activas (CA-04) -->
+    <app-activa-offers-pipeline
+      [ofertas]="estado.ofertasPipeline"
+      (clickOferta)="onClickOferta($event)"
+      (verTodas)="onVerTodasOfertas()">
+    </app-activa-offers-pipeline>
+  </ng-container>
+</section>
