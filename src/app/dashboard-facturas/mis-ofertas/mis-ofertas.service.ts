@@ -64,7 +64,7 @@ export class MisOfertasService {
     if (filtro !== 'TODAS') {
       params = params.set('estado', filtro);
     }
-    this.http.get<OfertasPage>('/api/core/ejecutivo/ofertas', { params }).pipe(
+    this.http.get<OfertasPage>('/api/bff/ejecutivo/ofertas', { params }).pipe(
       catchError(() => of(null))
     ).subscribe(res => {
       if (!res) {
@@ -99,7 +99,7 @@ export class MisOfertasService {
 
   retirar(ofertaId: string): void {
     this._estado.next({ ...this._estado.value, retirando: ofertaId });
-    this.http.patch<void>(`/api/core/oferta/${ofertaId}/retirar`, {}).pipe(
+    this.http.patch<void>(`/api/bff/oferta/${ofertaId}/retirar`, {}).pipe(
       catchError(() => of(null))
     ).subscribe(() => {
       const ofertas = this._estado.value.ofertas.map(o =>

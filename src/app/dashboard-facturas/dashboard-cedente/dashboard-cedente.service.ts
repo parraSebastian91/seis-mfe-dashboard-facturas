@@ -73,7 +73,7 @@ export class DashboardCedenteService {
   cargarPipeline(): void {
     this.estado.next({ ...this.estado.value, cargandoPipeline: true, errorPipeline: null });
 
-    this.http.get<PipelineCedente>('/api/core/dashboard/cedente/pipeline').pipe(
+    this.http.get<PipelineCedente>('/api/bff/dashboard/cedente/pipeline').pipe(
       tap(pipeline => {
         this.estado.next({ ...this.estado.value, pipeline, cargandoPipeline: false });
       }),
@@ -88,7 +88,7 @@ export class DashboardCedenteService {
     this.estado.next({ ...this.estado.value, cargandoKpis: true, errorKpis: null, periodo });
 
     this.http.get<{ kpis: KpisCedente; alerta: AlertaRiesgo | null }>(
-      `/api/core/dashboard/cedente?periodo=${periodo}`
+      `/api/bff/dashboard/cedente?periodo=${periodo}`
     ).pipe(
       tap(resp => {
         this.estado.next({

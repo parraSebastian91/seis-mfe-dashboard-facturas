@@ -67,7 +67,7 @@ export class DashboardEjecutivoService {
   cargarCartera(): void {
     this._estado.next({ ...this._estado.value, cargandoCartera: true, errorCartera: null });
     this.http.get<{ cartera: CarteraActiva; pipeline: OfertaActivaPipeline[] }>(
-      '/api/core/dashboard/ejecutivo/cartera'
+      '/api/bff/dashboard/ejecutivo/cartera'
     ).pipe(catchError(() => of(null))).subscribe(res => {
       if (!res) {
         this._estado.next({
@@ -89,7 +89,7 @@ export class DashboardEjecutivoService {
   cargarKpis(periodo: PeriodoEjecutivo = '1m'): void {
     this._estado.next({ ...this._estado.value, cargandoKpis: true, errorKpis: null });
     const params = new HttpParams().set('periodo', periodo);
-    this.http.get<KpisEjecutivo>('/api/core/dashboard/ejecutivo', { params }).pipe(
+    this.http.get<KpisEjecutivo>('/api/bff/dashboard/ejecutivo', { params }).pipe(
       catchError(() => of(null))
     ).subscribe(res => {
       if (!res) {
