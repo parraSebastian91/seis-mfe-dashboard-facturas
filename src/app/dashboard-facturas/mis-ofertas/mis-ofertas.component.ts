@@ -15,7 +15,7 @@ import {
 } from './mis-ofertas.service';
 import { MyOffersTableComponent } from './my-offers-table/my-offers-table.component';
 import { OfferRetireConfirmDialogComponent } from './offer-retire-confirm-dialog/offer-retire-confirm-dialog.component';
-import { NegotiationChatComponent } from '../../../../../shared-utils/src/lib/components/negotiation-chat/negotiation-chat.component';
+import { NegotiationChatComponent } from 'shared-utils';
 
 @Component({
   selector: 'app-mis-ofertas',
