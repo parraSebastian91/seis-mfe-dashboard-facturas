@@ -63,10 +63,15 @@
   </div>
 
   <!-- Diálogo de confirmación de retiro (CA-04) -->
-  <app-offer-retire-confirm-dialog
-    *ngIf="ofertaParaRetirar"
-    [cargando]="estado?.retirando === ofertaParaRetirar"
-    (confirmar)="onConfirmarRetiro()"
-    (cancelar)="onCancelarRetiro()">
-  </app-offer-retire-confirm-dialog>
+  <app-confirm-dialog
+    [open]="!!ofertaParaRetirar"
+    title="¿Retirar oferta?"
+    message="Esta acción no se puede deshacer."
+    confirmLabel="Sí, retirar"
+    loadingLabel="Retirando…"
+    [danger]="true"
+    [loading]="!!ofertaParaRetirar && estado?.retirando === ofertaParaRetirar"
+    (confirmed)="onConfirmarRetiro()"
+    (cancelled)="onCancelarRetiro()">
+  </app-confirm-dialog>
 </section>

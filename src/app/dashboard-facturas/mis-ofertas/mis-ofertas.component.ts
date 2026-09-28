@@ -14,13 +14,12 @@ import {
   MisOfertasState
 } from './mis-ofertas.service';
 import { MyOffersTableComponent } from './my-offers-table/my-offers-table.component';
-import { OfferRetireConfirmDialogComponent } from './offer-retire-confirm-dialog/offer-retire-confirm-dialog.component';
-import { NegotiationChatComponent } from 'shared-utils';
+import { ConfirmDialogComponent, NegotiationChatComponent } from 'shared-utils';
 
 @Component({
   selector: 'app-mis-ofertas',
   standalone: true,
-  imports: [NgIf, NgFor, MyOffersTableComponent, OfferRetireConfirmDialogComponent, NegotiationChatComponent],
+  imports: [NgIf, NgFor, MyOffersTableComponent, ConfirmDialogComponent, NegotiationChatComponent],
   templateUrl: './mis-ofertas.component.html',
   styleUrl: './mis-ofertas.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -32,6 +31,8 @@ export class MisOfertasComponent implements OnInit, OnDestroy {
 
   estado: MisOfertasState | null = null;
   ofertaParaRetirar: string | null = null;
+  /** Retiro en vuelo: mantiene el diálogo abierto mostrando "Retirando…". */
+  private retiroEnCurso: string | null = null;
   ofertaChatId: string | null = null;
 
   readonly filtros: Array<{ valor: FiltroEstadoOfertas; label: string }> = [
@@ -52,6 +53,12 @@ export class MisOfertasComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.svc.estado$.pipe(takeUntil(this.destroy$)).subscribe(estado => {
       this.estado = estado;
+      // El diálogo se cierra cuando el retiro termina, no cuando se confirma:
+      // así el estado "Retirando…" alcanza a verse.
+      if (this.retiroEnCurso && estado.retirando === null) {
+        this.retiroEnCurso = null;
+        this.ofertaParaRetirar = null;
+      }
       this.cdr.markForCheck();
     });
     this.svc.cargar('TODAS', 0);
@@ -80,12 +87,13 @@ export class MisOfertasComponent implements OnInit, OnDestroy {
 
   onConfirmarRetiro(): void {
     if (this.ofertaParaRetirar) {
+      this.retiroEnCurso = this.ofertaParaRetirar;
       this.svc.retirar(this.ofertaParaRetirar);
-      this.ofertaParaRetirar = null;
     }
   }
 
   onCancelarRetiro(): void {
+    if (this.retiroEnCurso) return;
     this.ofertaParaRetirar = null;
   }
 
